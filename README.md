@@ -242,8 +242,44 @@ readStream.pipe(gzip).pipe(writeStream); // 읽은 파일을 압축하여 작성
 * npm info 패키지 : 패키지 세부 정보 파악
 * npm adduser : npm 로그인을 위한 명령어 NPMJS.COM에서 회원가입 가능
 * npm whoami : 현재 사용자 정보
-* npm logout , npm versuin ..
+* npm logout , npm versuin ..\
 * npm deprecated 패키지명 버전 메시지 : 패키지 설치시 경고 메시지를 띄우게함
 * npm publish : 자신이 만든 패키지를 배포함
 * npm unpublish : 자신이 만든 패키지 배포 중단 (24 시간 내에만 가능)
+ 
 
+### express
+* nodemon 파일 변경시 알아서 재시작 해줍니다.  - 라이브러리
+* npm ls 라이브러리 현재 package에서 사용하고 있는지 확인 할 수 있다.
+* middleware사용 공통으로 사용하는 경우 미들웨어를 사용한다.
+* express는 위에 아래로 실행이됩니다.
+* res.status(상태코드).sned 등으로 상태코드를 다르게 줄 수 있습니다.
+* express 서버 구조는 보통 맨 위에 앱을 만들고 앱에 관련 설정을 set하여 작성 -> 미들웨어를 적고  -> get , post url 매핑 후 파라미터를 받는것들을 뒤에 작성합니다. (범위가 넓으면 뒤로 갑니다.)
+* sned() , sendFile() 등 한 라우터에서는 한가지에 행동만 해야 합니다. 응답 보낸후 writeHead() 등 사용하면 응답이 지난 후 헤드를 입력해서 에러가 발생합니다.
+* send() 같은 메서드를 입력해도 리턴은 아닙니다.
+* next(error) 안에 에러가 들어있다면 에러 처리 미들웨어로 넘어 갑니다.
+* 미들웨어 인자에 ('route')를 작성하면 이후 미들웨어를 넘어가고 다음 라우트로 넘어갑니다. next() 분기처리로 다음 라우터로 넘길떄 사용을 많이 합니다.
+* **에러 처리 미들웨어는 뒤에 작성하며 반드시 매개변수로 4개를 받아야합니다. (err ,req ,res , next)**
+  * 사용법
+  * 미들웨어는 app.use 안에 있는 로직을 말합니다. app.use 는 express안에 장착하는 의미입니다.
+  ~~~
+  app.use((req,res,next) => {로직 next() }) //next() 메서드를 실행해야 다음 라우터를 찾아갑니다.
+  
+  // 미들웨어는 여러 로직을 , 연결해서 작성 할 수 있다.
+  app.use('/' , (req , res , next) => {
+    console.log('시작후 넘어감');
+    next();
+  }, (req , res , next) => {
+
+  })
+  ~~~
+* express 매개변수 /:--- 라우터에 파라미터입니다.
+  * 사용은 req.params.hello | req.params.파라미터이름 으로 사용합니다.
+    ~~~
+    app.get('/:hello' , (res ,res) => {
+    
+      })
+    ~~~
+* app.get('*' , (res ,res) => { 모든 get요청에 대해 처리한다는 명령어입니다.
+ 
+* doqdl
